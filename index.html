@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ricky surya adiputra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #060d1f;
+            --ink: #c8d8e8;
+            --cyan: #00d4ff;
+            --cyan-dim: rgba(0, 212, 255, 0.08);
+            --muted: #3a5470;
+            --border: 1px solid #0f2040;
+            --font: 'IBM Plex Mono', monospace;
+            --font-display: 'Bebas Neue', sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: var(--font);
+            min-height: 100vh;
+            cursor: crosshair;
+            overflow-x: hidden;
+        }
+
+        
+        .blobs {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(80px);
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.25;
+        }
+
+        .b1 {
+            width: 500px; height: 500px;
+            background: #0057ff;
+            top: -180px; left: -120px;
+            animation: move1 22s ease-in-out infinite;
+        }
+
+        .b2 {
+            width: 380px; height: 380px;
+            background: #00d4ff;
+            bottom: -200px; right: -200px;
+            animation: move2 18s ease-in-out infinite;
+        }
+
+        .b3 {
+            width: 320px; height: 320px;
+            background: #003a99;
+            top: 10%; left: 50%;
+            transform: translate(-50%, -50%);
+            animation: move3 26s ease-in-out infinite;
+        }
+
+        .b4 {
+            width: 260px; height: 260px;
+            background: #00aacc;
+            bottom: 10%; left: 25%; top: 20%;
+            animation: move4 20s ease-in-out infinite;
+        }
+
+        @keyframes move1 {
+            0%,100% { transform: translate(0,0) scale(1); }
+            33% { transform: translate(100px, 80px) scale(1.1); }
+            66% { transform: translate(30px, -60px) scale(0.9); }
+        }
+
+        @keyframes move2 {
+            0%,100% { transform: translate(0,0) scale(1); }
+            40% { transform: translate(-90px, -70px) scale(1.15); }
+            70% { transform: translate(-20px, 40px) scale(0.88); }
+        }
+
+        @keyframes move3 {
+            0%,100% { transform: translate(-50%,-50%) scale(1); }
+            50% { transform: translate(-35%,-65%) scale(1.25); }
+        }
+
+        @keyframes move4 {
+            0%,100% { transform: translate(0,0); }
+            45% { transform: translate(80px, -50px) scale(1.1); }
+            80% { transform: translate(-40px, 25px) scale(0.9); }
+        }
+
+        .page {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 88px 28px 88px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero {
+            margin-bottom: 88px;
+            animation: fadeUp 0.7s ease both;
+            text-align: center;
+        }
+
+        .hero-name {
+            font-family: var(--font);
+            font-size: clamp(24px, 4vw, 36px);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+            margin-bottom: 12px;
+        }
+
+        .hero-name .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background: var(--cyan);
+            margin-left: 3px;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .hero-tagline {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 32px;
+            letter-spacing: 0.04em;
+        }
+
+        .hero-tagline .comment { color: #1e3a55; }
+        .hero-tagline .string  { color: rgba(0, 212, 255, 0.6); }
+
+        .hero-links {
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-link {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-decoration: none;
+            padding: 9px 20px;
+            border: var(--border);
+            border-right: none;
+            transition: color 0.15s, border-color 0.15s, background 0.15s;
+        }
+
+        .hero-link:last-child { border-right: var(--border); }
+
+        .hero-link:hover {
+            color: var(--cyan);
+            border-color: rgba(0, 212, 255, 0.3);
+            background: var(--cyan-dim);
+        }
+
+        .section-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--cyan);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            opacity: 0.7;
+        }
+
+        .section-label::before { content: '//'; color: var(--muted); }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #0f2040;
+        }
+
+        .projects {
+            margin-bottom: 72px;
+            animation: fadeUp 0.7s 0.1s ease both;
+        }
+
+        .project-card {
+            display: block;
+            text-decoration: none;
+            color: var(--ink);
+            border: var(--border);
+            padding: 22px 24px;
+            margin-bottom: 10px;
+            background: rgba(6, 13, 31, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: border-color 0.2s, background 0.2s, transform 0.15s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 2px;
+            background: var(--cyan);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.25s ease;
+        }
+
+        .project-card:hover {
+            border-color: rgba(0, 212, 255, 0.2);
+            background: rgba(0, 212, 255, 0.04);
+            transform: translateX(4px);
+        }
+
+        .project-card:hover::before { transform: scaleY(1); }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+        }
+
+        .project-name {
+            font-family: var(--font-display);
+            font-size: 22px;
+            letter-spacing: 0.06em;
+            color: var(--ink);
+        }
+
+        .project-year {
+            font-size: 10px;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+        }
+
+        .project-desc {
+            font-size: 12px;
+            line-height: 1.75;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .project-stack {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #1e3a55;
+            transition: color 0.2s;
+        }
+
+        .project-card:hover .project-stack { color: rgba(0, 212, 255, 0.5); }
+
+        .experience {
+            animation: fadeUp 0.7s 0.2s ease both;
+        }
+
+        .exp-item {
+            padding: 22px 0;
+            border-bottom: var(--border);
+        }
+
+        .exp-item:last-child { border-bottom: none; }
+
+        .exp-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 4px;
+        }
+
+        .exp-role {
+            font-family: var(--font-display);
+            font-size: 20px;
+            letter-spacing: 0.04em;
+            color: var(--ink);
+        }
+
+        .exp-period {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: rgba(0, 212, 255, 0.5);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .exp-company {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+
+        .exp-body {
+            font-size: 12px;
+            line-height: 1.75;
+            color: #2a4060;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 560px) {
+            .hero-name { font-size: 52px; }
+            .hero-link { padding: 8px 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="blobs">
+        <div class="blob b1"></div>
+        <div class="blob b2"></div>
+        <div class="blob b3"></div>
+        <div class="blob b4"></div>
+    </div>
+
+    <div class="page">
+
+        <div class="hero">
+            <h1 class="hero-name">ricky surya adiputra<span class="cursor"></span></h1>
+            <p class="hero-tagline">
+                <span class="comment">// </span><span class="string">fueled by robusta</span>
+            </p>
+            <nav class="hero-links">
+                <a class="hero-link" href="https://github.com/rickysurya" target="_blank" rel="noopener">github</a>
+                <a class="hero-link" href="https://www.linkedin.com/in/ricky-surya-adiputra/" target="_blank" rel="noopener">linkedin</a>
+                <a class="hero-link" href="mailto:rickysuryaa10@gmail.com">email</a>
+            </nav>
+        </div>
+
+        <div class="projects">
+            <div class="section-label">projects</div>
+
+            <a class="project-card" href="https://github.com/rickysurya/GroupTab" target="_blank" rel="noopener">
+                <div class="project-header">
+                    <span class="project-name">GroupTab</span>
+                    <span class="project-year">2026</span>
+                </div>
+                <p class="project-desc">
+                    real-time group chat with bill splitting. equal/custom/itemized splits, greedy settlement algorithm.
+                </p>
+                <div class="project-stack">java · spring boot · rabbitmq · postgresql · docker</div>
+            </a>
+
+            <a class="project-card" href="https://github.com/rickysurya/myGram" target="_blank" rel="noopener">
+                <div class="project-header">
+                    <span class="project-name">MyGram</span>
+                    <span class="project-year">2023</span>
+                </div>
+                <p class="project-desc">
+                    rest api for photo sharing. post photos, comment on others. it's basically instagram clone hehe.
+                </p>
+                <div class="project-stack">golang · gin · postgresql · gorm</div>
+            </a>
+
+            <a class="project-card" href="https://github.com/rickysurya/inventory_app" target="_blank" rel="noopener">
+                <div class="project-header">
+                    <span class="project-name">Inventory App</span>
+                    <span class="project-year">2022</span>
+                </div>
+                <p class="project-desc">
+                    web app for inventory tracking, sales, and order management.
+                </p>
+                <div class="project-stack">python · django · mysql</div>
+            </a>
+        </div>
+
+        <div class="experience">
+            <div class="section-label">experience</div>
+
+            <div class="exp-item">
+                <div class="exp-top">
+                    <span class="exp-role">Application Developer</span>
+                    <span class="exp-period">Feb – Aug 2024</span>
+                </div>
+                <div class="exp-company">PT Bank Central Asia — Jakarta</div>
+                <p class="exp-body">
+                    migrated a core banking credit origination system, from apache struts
+                    to spring boot rest api across 60 endpoints. navigated undocumented legacy
+                    codebase, restructured into layered architecture.
+                </p>
+            </div>
+
+            <div class="exp-item">
+                <div class="exp-top">
+                    <span class="exp-role">Application Developer</span>
+                    <span class="exp-period">Aug – Dec 2023</span>
+                </div>
+                <div class="exp-company">Universitas Tanjungpura — Pontianak</div>
+                <p class="exp-body">
+                    built a desktop app to process fingerprint machine data into monthly
+                    attendance reports with deterministic rules based on employee type.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
