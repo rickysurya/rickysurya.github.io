@@ -1,121 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Systems</title>
-    <style>
-        body { 
-            margin: 0;
-            background: #0a0a0a;
-            color: #777; 
-            font-family: 'JetBrains Mono Nerd Font', monospace;
-            font-size: 14px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            user-select: none;
-            -webkit-user-select: none;
-        }
+    <meta charset="UTF-8">
+    <title>Systems</title>
+    <style>
+        body { 
+            margin: 0;
+            background: #0a0a0a;
+            color: #777; 
+            font-family: 'JetBrainsMono Nerd Font', 'JetBrains Mono', monospace;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
 
-        #canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 0;
-            opacity: 0.9;
-        }
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.7;
+        }
 
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 500px;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .header {
-            font-size: 36px; 
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 30px;
-            letter-spacing: -1px;
-        }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 500px;
+            padding: 20px;
+            text-align: center;
+        }
 
-        p {
-            margin-bottom: 25px;
-            line-height: 1.6; 
-        }
+        .header {
+            font-size: clamp(2rem, 8vw, 4rem);
+            font-weight: 800; 
+            color: #ffffff;
+            margin-bottom: 30px;
+            letter-spacing: -1px; 
+        }
 
-        .links a {
-        color: #aaa; 
-        text-decoration: none;
-        margin: 0 10px; 
-        font-size: 15px;
-        font-weight: 600;
-        }
+        .links {
+            margin-top: 40px; 
+        }
 
-        a:hover {
-            color: #fff; 
-            cursor: pointer;
-        }
-    </style>
+        a {
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            color: #aaa; 
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 14px;  
+            font-weight: 600;  
+        }
+
+        a:hover {
+            color: #fff; 
+        }
+    </style>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
-    
-    <div class="container">
-        <div class="header">Ricky Surya</div>
-        <div class="links">
-            <a href="https://github.com/rickysurya">GITHUB</a>
-            <a href="https://www.linkedin.com/in/ricky-surya-adiputra/">LINKEDIN</a>
-            <a href="mailto:rickysuryaa10@gmail.com">EMAIL</a>
-        </div>
-    </div>
+    <canvas id="canvas"></canvas>
+    
+    <div class="container">
+        <div class="header">Ricky Surya</div>
+        
+        <div class="links">
+            <a href="https://github.com/rickysurya">GITHUB</a>
+            <a href="https://www.linkedin.com/in/ricky-surya-adiputra/">LINKEDIN</a>
+            <a href="mailto:rickysuryaa10@gmail.com">EMAIL</a>
+        </div>
+    </div>
 
-    <script>
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        const cellSize = 15;
-        let cols, rows, grid;
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const cellSize = 15;
+        let cols, rows, grid;
 
-        function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            cols = Math.floor(canvas.width / cellSize);
-            rows = Math.floor(canvas.height / cellSize);
-            grid = new Uint8Array(cols * rows).map(() => Math.random() > 0.85 ? 1 : 0);
-        }
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            cols = Math.floor(canvas.width / cellSize);
+            rows = Math.floor(canvas.height / cellSize);
+            grid = new Uint8Array(cols * rows).map(() => Math.random() > 0.85 ? 1 : 0);
+        }
 
-        function draw() {
-            ctx.fillStyle = 'rgba(10, 10, 10, 0.05)'; 
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            let next = new Uint8Array(cols * rows);
-            for (let i = 0; i < cols; i++) {
-                for (let j = 0; j < rows; j++) {
-                    let sum = 0;
-                    for (let x = -1; x < 2; x++) {
-                        for (let y = -1; y < 2; y++) {
-                            sum += grid[((j + y + rows) % rows) * cols + ((i + x + cols) % cols)];
-                        }
-                    }
-                    sum -= grid[j * cols + i];
-                    let idx = j * cols + i;
-                    if (grid[idx] === 1 && (sum < 2 || sum > 3)) next[idx] = 0;
-                    else if (grid[idx] === 0 && sum === 3) next[idx] = 1;
-                    else next[idx] = grid[idx];
-                }
-            }
-            grid = next;
-            ctx.fillStyle = '#333';
-            for (let i = 0; i < cols; i++) {
-                for (let j = 0; j < rows; j++) {
-                    if (grid[j * cols + i]) ctx.fillRect(i * cellSize, j * cellSize, cellSize - 2, cellSize - 2);
-                }
-            }
-            setTimeout(draw, 200);
-        }
-        init(); draw();
-    </script>
+        function draw() {
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.05)'; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            let next = new Uint8Array(cols * rows);
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    let sum = 0;
+                    for (let x = -1; x < 2; x++) {
+                        for (let y = -1; y < 2; y++) {
+                            sum += grid[((j + y + rows) % rows) * cols + ((i + x + cols) % cols)];
+                        }
+                    }
+                    sum -= grid[j * cols + i];
+                    let idx = j * cols + i;
+                    if (grid[idx] === 1 && (sum < 2 || sum > 3)) next[idx] = 0;
+                    else if (grid[idx] === 0 && sum === 3) next[idx] = 1;
+                    else next[idx] = grid[idx];
+                }
+            }
+            grid = next;
+            ctx.fillStyle = '#444'; 
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    if (grid[j * cols + i]) ctx.fillRect(i * cellSize, j * cellSize, cellSize - 2, cellSize - 2);
+                }
+            }
+            setTimeout(draw, 200);
+        }
+        init(); draw();
+    </script>
 </body>
 </html>
