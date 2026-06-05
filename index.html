@@ -87,6 +87,10 @@
             canvas.height = window.innerHeight;
             cols = Math.floor(canvas.width / cellSize);
             rows = Math.floor(canvas.height / cellSize);
+            
+            //force canvas width and height to eliminate deadspace
+            canvas.width = cols * cellSize;
+            canvas.height = rows * cellSize;
             grid = new Uint8Array(cols * rows).map(() => Math.random() > 0.85 ? 1 : 0);
         }
 
