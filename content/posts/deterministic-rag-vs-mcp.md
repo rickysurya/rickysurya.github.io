@@ -16,7 +16,7 @@ On paper, MCP sounds more advanced. It is way more flexible, indeed. But in prac
 is much harder to build, secure, and test. Infinite loops, latency, and the fact that LLM
 might hallucinate the tool arguments are some of the things that need to be handled.
 
-But the biggest difference is **consistency**.
+But the difference is **consistency**.
 
 With MCP, if you ask the same question twice, the LLM might decide to call different
 tools, or search for different keywords. The context changes, so the answer changes.
@@ -40,9 +40,16 @@ _Note: Because GPUs calculate floating point math in parallel, LLMs are never 10
 deterministic across different machines, but for a single-node system, `temperature=0` and
 a fixed seed are as close as we can get_
 
-AI models will never be deterministic, but it can get more accurate as everything advance
-but it will never be 100% accurate and free of error. It's just that the rate of error
-might be so low people don't notice it or won't be bothered that makes people think AI is
-gonna replace everything, and it's fine that most use case maybe fine with that but
-critical sector that involves humans life, safety, etc might not tolerate that slight
-margin of error.
+## Conclusion
+
+AI models will never be deterministic, but it can get more accurate as technology
+advances.
+
+The reate of error might eventually drop so low people won't notice or care, which fuels
+the current hype that AI will replace everything. For most consumer use cases, a 99%
+success rate is perfectly fine. But for critical sectors involving human life and safety
+like medical diagnostics or autonomous driving that slight margin of error is intolerable.
+
+That is exactly why deterministic retrieval systems like RAG, which prioritize
+auditability and exact source citations over "agentic magic", will always have a place in
+enterprise software.
