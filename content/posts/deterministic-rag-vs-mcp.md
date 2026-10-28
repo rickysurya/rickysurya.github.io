@@ -1,38 +1,57 @@
-## RAG vs MCP
+---
+title: "Why I Built a Deterministic RAG System"
+date: 2026-10-28
+draft: false
+tags: ["Architecture", "AI", "RAG"]
+---
 
 "MCP is the future, it will revolutionize how AI interacts with APIs", they say.
 
-Before casting stones, let's see how classic RAG flow works. First, the user ingest data.
-Then the system embeds the text into a vector database. When query comes in, the system
-performs a mathematical search(cosine similarity) to fetch the top-K chunks, inject them
-into LLM prompt and let the LLM generates the answer.
+The hype around Agentic AI and Model Context Protocol (MCP) is deafening. Every day, we
+see demos of LLMs using the MCP to browse the web, query APIs, and make autonomous
+decisions. It looks like magic. But if you are building software for a critical enterprise
+system or any critical industry that involves human lives or safety, magic is exactly what
+you should stay away from.
 
-Now let's see how different MCP flow for the same use case. Instead of a vector database,
-LLM is given a set of tools (e.g., `read_file`, `search_database`). The user writes a
-prompt, and the LLM decides which tools to call, reads the output, and generates the
-answer.
+## The Hype of Agentic Retrieval
 
-On paper, MCP sounds more advanced. It is way more flexible, indeed. But in practice, it
-is much harder to build, secure, and test. Infinite loops, latency, and the fact that LLM
-might hallucinate the tool arguments are some of the things that need to be handled.
+Usually LLM is given set of tools (e.g., `read_file`, `search_database`). In a typical
+agentic flows, user asks a question and the LLM decides which tools to call, read the
+output and generates answer.
 
-But the difference is **consistency**.
+On paper, it is way more flexible, indeed. But in practice, it is much harder to build,
+secure, and test. You have to handle infinite loops, latency, and the fact that LLM might
+hallucinate the tool arguments are some of the things that need to be handled. But the
+biggest issue is **consistency**.
 
 With MCP, if you ask the same question twice, the LLM might decide to call different
 tools, or search for different keywords. The context changes, so the answer changes.
 
-With RAG, the retrieval is strictly mathematical. By enforcing a strict top-K filter, the
-same question will always retrieves the exact same chunks.
+## Predictable Retrieval
+
+Instead of ordering the LLM to search, classic Retrieval Augmented Generation which
+separates the retrieval from the generation, might works better depending on your use case
+or constraint.
+
+Let's see how classic RAG flow works. First, the user ingest data. Then the system embeds
+the text into a vector database. When query comes in, the system performs a mathematical
+search (cosine similarity) to fetch the top-K chunks, inject them into LLM prompt and let
+the LLM generates the answer.
+
+Retrieval is a database read. It is fast, cheap, and highly predictable. If you ask the
+same question twice, the math guarantees you will retrieve the exact same chunks.
+
+## Forcing the LLM to Behave
 
 RAG is by no means deterministic. Because even with strict top-K filter, you still inject
-the chunks to a prompt and pass it to LLM. But we can make it **more** deterministic by
+the chunks into a probabilistic LLM. But we can make the system **highly reproducible** by
 configuring the LLM itself:
 
-- set the temperature to 0
-- fix the LLM seed (for local models)
-- freeze the vector index
+- Set the temperature to 0 (to remove creativity)
+- Fix the LLM seed (for local models)
+- Freeze the vector index
 
-When you combine deterministic retrieval with better generation parameter, the entire
+When you combine deterministic retrieval with strict generation parameter, the entire
 system becomes reproducible. You can audit exactly why the AI said what it said and trace
 it back to the source where you or user ingests the data
 
@@ -42,14 +61,12 @@ a fixed seed are as close as we can get_
 
 ## Conclusion
 
-AI models will never be deterministic, but it can get more accurate as technology
-advances.
+AI models will never be perfectly deterministic, but it will get more accurate as
+technology advances.
 
-The reate of error might eventually drop so low people won't notice or care, which fuels
-the current hype that AI will replace everything. For most consumer use cases, a 99%
-success rate is perfectly fine. But for critical sectors involving human life and safety
-like medical diagnostics or autonomous driving that slight margin of error is intolerable.
+The rate of error might eventually drop so low people won't notice or care. But for
+critical sectors involving human life that slight margin of error is intolerable.
 
-That is exactly why deterministic retrieval systems like RAG, which prioritize
-auditability and exact source citations over "agentic magic", will always have a place in
-enterprise software.
+That is exactly why predictable retrieval systems like RAG, which prioritize auditability
+and exact source citations over "agentic magic", will always have a place in enterprise
+software.
