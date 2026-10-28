@@ -1,0 +1,47 @@
+baseURL: "https://rickysurya.github.io/"
+languageCode: "en-us"
+title: "Ricky Surya | Engineering Notes"
+theme: "PaperMod"
+
+params:
+  assets:
+    favicon: "/favicon.ico"
+    favicon16x16: "/favicon-16x16.png"
+    favicon32x32: "/favicon-32x32.png"
+    apple_touch_icon: "/apple-touch-icon.png"
+    safari_pinned_tab: "/bird.svg"
+  label:
+    text: "Build Log"
+    icon: "/bird.svg"
+    iconHeight: 24
+  description: "Notes on Backend Engineering, AI, and Infrastructure"
+  author: "Ricky Surya Adiputra"
+  ShowReadingTime: true
+  ShowShareButtons: false
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  defaultTheme: "light"
+  disableSpecial1stPost: true
+  profileMode:
+    enabled: true
+    title: "Ricky Surya Adiputra"
+    subtitle: "Backend & Infrastructure Engineer"
+    imageUrl: "https://github.com/rickysurya.png"
+    imageTitle: "Profile"
+    buttons:
+      - name: "GitHub"
+        url: "https://github.com/rickysurya"
+      - name: "LinkedIn"
+        url: "https://linkedin.com/in/your-linkedin-url"
+
+menu:
+  main:
+    - identifier: "posts"
+      name: "Posts"
+      url: "/posts/"
+      weight: 10
+    - identifier: "about"
+      name: "About"
+      url: "/about/"
+      weight: 20

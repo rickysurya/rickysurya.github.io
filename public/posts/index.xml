@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on Ricky Surya | Engineering Notes</title>
+    <link>http://localhost:1313/posts/</link>
+    <description>Recent content in Posts on Ricky Surya | Engineering Notes</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title></title>
+      <link>http://localhost:1313/posts/deterministic-rag-vs-mcp/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/deterministic-rag-vs-mcp/</guid>
+      <description>&lt;h2 id=&#34;rag-vs-mcp&#34;&gt;RAG vs MCP&lt;/h2&gt;
+&lt;p&gt;&amp;ldquo;MCP is the future, it will revolutionize how AI interacts with APIs&amp;rdquo;, they say.&lt;/p&gt;
+&lt;p&gt;Before casting stones, let&amp;rsquo;s see how classic RAG flow works. First, the user ingest data.
+Then the system embeds the text into a vector database. When query comes in, the system
+performs a mathematical search(cosine similarity) to fetch the top-K chunks, inject them
+into LLM prompt and let the LLM generates the answer.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
