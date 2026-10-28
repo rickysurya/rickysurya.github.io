@@ -1,6 +1,6 @@
 baseURL: "https://rickysurya.github.io/"
 languageCode: "en-us"
-title: "Ricky Surya | Engineering Notes"
+title: "Ricky Surya | Blog"
 theme: "PaperMod"
 
 params:
