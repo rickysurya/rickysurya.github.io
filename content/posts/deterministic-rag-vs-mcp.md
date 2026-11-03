@@ -1,5 +1,5 @@
 ---
-title: "Why I Built a Deterministic RAG System"
+title: "Why I Built My Own Local RAG Pipeline Instead of Using an AI Agent"
 date: 2026-10-28
 draft: false
 tags: ["Architecture", "AI", "RAG"]
