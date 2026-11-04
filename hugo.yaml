@@ -33,9 +33,8 @@ params:
       - name: "GitHub"
         url: "https://github.com/rickysurya"
       - name: "LinkedIn"
-        url: "https://linkedin.com/in/your-linkedin-url"
+        url: "https://linkedin.com/in/ricky-surya-adiputra"
 
-enableRobotsTXT: true
 menu:
   main:
     - identifier: "posts"
