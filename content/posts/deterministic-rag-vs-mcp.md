@@ -2,6 +2,9 @@
 title: "Why I Built My Own Local RAG Pipeline Instead of Using an AI Agent"
 date: 2026-10-28
 draft: false
+description:
+  "Why I built a local RAG pipeline instead of using AI agents, and why predictable
+  retrieval is critical for enterprise systems."
 tags: ["Architecture", "AI", "RAG"]
 ---
 
