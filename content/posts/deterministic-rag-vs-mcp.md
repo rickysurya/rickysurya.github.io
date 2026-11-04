@@ -5,7 +5,10 @@ draft: false
 tags: ["Architecture", "AI", "RAG"]
 ---
 
-![This is fine](/ThisIsFineGIF.gif)
+<p align="center">
+  <img src="/ThisIsFineGIF.gif" alt="This is fine" width="100%" />
+  <br>
+</p>
 
 "MCP is the future, it will revolutionize how AI interacts with APIs", they say.
 

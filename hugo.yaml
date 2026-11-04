@@ -14,7 +14,7 @@ params:
     text: "Build Log"
     icon: "/bird.svg"
     iconHeight: 24
-  description: "Notes on Backend Engineering, AI, and Infrastructure"
+  description: "Personal Notes on Backend Engineering, AI, and Infrastructure"
   author: "Ricky Surya Adiputra"
   ShowReadingTime: true
   ShowShareButtons: false
@@ -26,7 +26,7 @@ params:
   profileMode:
     enabled: true
     title: "Ricky Surya Adiputra"
-    subtitle: "Backend & Infrastructure Engineer"
+    subtitle: "Software Engineer"
     imageUrl: "https://github.com/rickysurya.png"
     imageTitle: "Profile"
     buttons:
@@ -41,3 +41,8 @@ menu:
       name: "Posts"
       url: "/posts/"
       weight: 10
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
