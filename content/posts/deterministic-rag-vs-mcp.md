@@ -5,7 +5,8 @@ draft: false
 description:
   "Why I built a local RAG pipeline instead of using AI agents, and why predictable
   retrieval is critical for enterprise systems."
-tags: ["Architecture", "AI", "RAG"]
+ShowDescription: false
+tags: ["Architecture", "AI", "RAG", "MCP"]
 ---
 
 <p align="center">
