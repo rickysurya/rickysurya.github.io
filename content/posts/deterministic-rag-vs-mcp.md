@@ -19,70 +19,82 @@ tags: ["Architecture", "AI", "RAG", "MCP"]
 The hype around Agentic AI and Model Context Protocol (MCP) is deafening. Every day, we
 see demos of LLMs using MCP to browse the web, query APIs, and make autonomous decisions.
 It looks like magic. But if you are building software for a critical enterprise system or
-any critical industry that involves human lives or safety, magic is exactly what you
-should stay away from.
+any critical industry involving human safety, magic is exactly what you should stay away
+from.
 
-## The Hype of Agentic Retrieval
+## The Agentic Search Trade-Off
 
-Usually the LLM is given set of tools (e.g., `read_file`, `search_database`). In a typical
-agentic flow, the user asks a question and the LLM decides which tools to call, read the
-output and generates answer.
+In a typical agentic flow, an LLM is given tools (e.g., standard SQL queries, or keyword
+search tools like `grep`). If it doesn't find the answer on the first try, the agentic
+loop allows it to refine its keywords and search again. Agentic workflows actually perform
+best when leveraging standard keyword search, or when skipping retrieval entirely by
+dumping data into massive context windows.
 
-On paper, it is way more flexible, indeed. But in practice, it is much harder to build,
-secure, and test. You have to handle infinite loops, latency, and the fact that the LLM
-might hallucinate tool arguments are just a few of the things that need to be handled [1].
-But the biggest issue is **consistency**.
-
-With MCP, if you ask the same question twice, the LLM might decide to call different
-tools, or search for different keywords. The context changes, so the answer changes.
+On paper, this iterative loop is highly flexible, indeed. But in practice, it is much
+harder to secure, test, and audit. You have to handle infinite loops, latency spikes, and
+the fact that the LLM might hallucinate tool arguments [^1]. Most importantly, it lacks
+consistency. If you ask the same question twice, the LLM might decide to search different
+keywords or call entirely different tools. The context changes, so the answer changes.
 
 ## Predictable Retrieval
 
-Instead of ordering the LLM to search, classic Retrieval Augmented Generation (RAG), which
-separates the retrieval from the generation, might works better depending on your use case
-or constraints.
+Instead of ordering an LLM to iteratively guess keywords, classic Retrieval Augmented
+Generation (RAG), which separates the retrieval from the generation, might works better
+depending on your use case or constraints. It bridges the semantic gap, matching the
+underlying meaning of a user's query rather than just literal keyword matches.
 
-Let's look at how classic RAG flow works. First, the user ingest data. Then the system
-embeds the text into a vector database. When query comes in, the system performs a
-mathematical search (cosine similarity) to fetch the top-K chunks, inject them into the
-LLM prompt and lets the LLM generate the answer.
+A common misconception in the industry is that implementing RAG requires standing up a
+dedicated Vector Database. In reality, dedicated vector databases are only necessary when
+scaling to tens of millions or billions of rows. For the vast majority of enterprise use
+cases below that scale, a standard Vector Index attached to your existing relational
+database (such as `pgvector` in PostgreSQL) is more than enough.
 
-Retrieval is a database read. It is fast, cheap, and highly predictable. If you ask the
-same question twice, the math guarantees you will retrieve the exact same chunks.
+When a query comes in, the system performs a mathematical search (cosine similarity)
+against the vector index to fetch the top-K chunks, inject them into the LLM prompt and
+let the LLM generate the answer.
+
+Retrieval becomes a standard database read. It is fast, cheap, and highly predictable. The
+math guarantees that identical queries will retrieve the exact same chunks every single
+time.
 
 ## Forcing the LLM to Behave
 
-RAG is by no means deterministic. Because even with strict top-K filter, you still inject
-the chunks into a probabilistic LLM. But we can make the system **highly reproducible** by
-configuring the LLM itself:
+RAG is by no means completely deterministic. Because even with strict top-K filter, you
+still inject those chunks into a probabilistic LLM. But we can make the system **highly
+reproducible** by configuring the LLM itself:
 
 - Set the temperature to 0 (to remove creativity)
 - Fix the LLM seed (for local models)
 - Freeze the vector index
 
-When you combine deterministic retrieval with strict generation parameters, the entire
-system becomes reproducible. You can audit exactly why the AI said what it said and trace
-it back to the exact source where the data was ingested.
+When you combine deterministic mathematical retrieval with strict generation parameters,
+the entire system becomes reproducible. You can audit exactly why the AI generated a
+specific response and trace it back to the exact source text where the data was ingested.
 
-_Note: Because GPUs calculate floating point math in parallel, LLMs are never 100%
-deterministic across different machines [2], but for a single-node system, `temperature=0`
-and a fixed seed are as close as we can get_
+_(Note: Because GPUs calculate floating-point math in parallel, LLMs are never 100%
+deterministic across different machines [^2], but for a single-node system,
+`temperature=0` and a fixed seed are as close as we can get.)_
 
 ## Conclusion
 
 AI models will never be perfectly deterministic, but they will get more accurate as
 technology advances.
 
-The rate of error might eventually drop so low people won't notice or care. But for
-critical sectors involving human life, that slight margin of error is intolerable.
+The rate of error might eventually drop so low that general consumers won't care. But for
+critical sectors involving human life or strict compliance, that slight margin of error is
+intolerable.
 
-That is exactly why predictable retrieval systems like RAG, which prioritize auditability
-and exact source citations over "agentic magic", will always have a place in enterprise
-software.
+That is exactly why predictable retrieval systems like RAG, which (when scaled
+appropriately with a vector index rather than an oversized vector database) prioritize
+auditability and exact source citations over "agentic magic", will always have a place in
+enterprise software.
 
 ## References
 
-1. Anthropic. _Model Context Protocol Specification_.
-   https://modelcontextprotocol.io/specification
-2. PyTorch. _Reproducibility Documentation_.
-   https://pytorch.org/docs/stable/notes/randomness.html
+[^1]:
+    Anthropic. _Model Context Protocol Specification_.
+    https://modelcontextprotocol.io/specification
+
+[^2]:
+    PyTorch. _Reproducibility Documentation_.
+    https://pytorch.org/docs/stable/notes/randomness.html
