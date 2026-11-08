@@ -86,10 +86,10 @@ count 550 tokens.
 Because the model's hard limit is 512, those extra 40 tokens are silently truncated. The
 last few sentences of your chunk are completely deleted.
 
-To fix this, production systems apply a safety margin. **The Open Notebook** project
-explicitly defaults its chunk size to **400 tokens** when using `mxbai-embed-large` [^2].
-Their documentation states this is to stay safely below the 512 token ceiling after
-accounting for tokenizer mismatch and splitter overshoot.
+To fix this, production systems apply a safety margin. A common best practice is to
+default your chunk size to 400 tokens when using `mxbai-embed-large`. Their documentation
+states this is to stay safely below the 512 token ceiling after accounting for tokenizer
+mismatch and splitter overshoot.
 
 If you use a 400-token chunk, you have a safe buffer. Your Java code measures `400`
 tokens. It sends the text to `mxbai`, and because of the tokenizer mismatch, `mxbai` might
@@ -102,6 +102,6 @@ respect the hardware limits of the model and leave a buffer for the tokenizer mi
 
 ## References
 
-[^1]: TigerData. "Best Open Source Embedding Models for RAG in 2026."
-
-[^2]: Open Notebook. "`OPEN_NOTEBOOK_CHUNK_SIZE` Defaults to 400 Tokens."
+[^1]:
+    TigerData. _"Best Open Source Embedding Models for RAG in 2026."_
+    https://www.tigerdata.com/blog/finding-the-best-open-source-embedding-model-for-rag
