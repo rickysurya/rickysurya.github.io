@@ -52,7 +52,7 @@ WordPiece tokenizer.
 
 `mxbai-embed-large` has a hard context limit of 512 tokens. If you send it a chunk larger
 than that, it will not throw an error. As a benchmark by TigerData notes: _"It silently
-truncates, so retrieval quality drops without any warning in your logs."_[^1] The final
+truncates, so retrieval quality drops without any warning in your logs."_ [^1] The final
 sentence of your chunk is simply deleted from the vector, and your RAG system becomes
 blind to that information.
 
@@ -87,7 +87,7 @@ Because the model's hard limit is 512, those extra 40 tokens are silently trunca
 last few sentences of your chunk are completely deleted.
 
 To fix this, production systems apply a safety margin. **The Open Notebook** project
-explicitly defaults its chunk size to **400 tokens** when using `mxbai-embed-large`[^2].
+explicitly defaults its chunk size to **400 tokens** when using `mxbai-embed-large` [^2].
 Their documentation states this is to stay safely below the 512 token ceiling after
 accounting for tokenizer mismatch and splitter overshoot.
 
